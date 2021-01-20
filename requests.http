@@ -16,3 +16,20 @@ Content-Type: application/json
   "email": "testRade@example.com",
   "password": "testR"
 }
+
+### Get all surveys for user
+GET http://localhost:8000/api/survey
+Content-Type: application/json
+
+### Get single survey
+GET http://localhost:8000/api/survey/id
+Content-Type: application/json
+
+### Create survey
+POST http://localhost:8000/api/survey
+Content-Type: application/json
+
+{
+  "name": "Survey 1",
+  "description": "lorem ipsum"
+}

@@ -1,10 +1,15 @@
-import { MongoClient } from "./deps.ts";
-import UserSchema from "./models/User.ts";
+import { init, MongoClient } from "./deps.ts";
+import { SurveySchema } from "./models/Survey.ts";
+import { UserSchema } from "./models/User.ts";
+
+//await init();
 
 const client = new MongoClient();
 const mongoUrl = Deno.env.get("MONGO_URL")!;
-await client.connectWithUri(mongoUrl);
+client.connectWithUri(mongoUrl);
 
-const db = client.database("deno_survey");
+const db = client.database("DenoSurvey");
 
-export const usersCollection = db.collection<UserSchema>('users');
+const usersCollection = db.collection<UserSchema>("users");
+const surveysCollection = db.collection<SurveySchema>("surveys");
+export { db, usersCollection, surveysCollection };

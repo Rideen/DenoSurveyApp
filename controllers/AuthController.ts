@@ -1,12 +1,12 @@
 import { RouterContext, hashSync, compareSync, create, verify } from '../deps.ts';
-import User from '../models/User.ts';
+import { usersCollection } from '../mongo.ts';
 
 class AuthController {
   async login(ctx: RouterContext) {
     const { value } = ctx.request.body();
     const { email, password } = await value;
 
-    if(!email || !password) {
+    if (!email || !password) {
       ctx.response.body = {
         message: "Provide email and password."
       };
@@ -14,8 +14,8 @@ class AuthController {
       return;
     }
 
-    let userInDb = await User.findOne({ email });
-    if(!userInDb) {
+    let userInDb = await usersCollection.findOne({ email });
+    if (!userInDb) {
       ctx.response.body = {
         message: "User not found."
       };
@@ -33,11 +33,10 @@ class AuthController {
 
     const secret = Deno.env.get('JWT_SECRET_KEY')!;
     const jwt = await create({ alg: "HS512", typ: "JWT" }, { iss: userInDb.email, exp: new Date().getTime() + 60 * 60 * 1000 }, secret);
-    
+
     ctx.response.body = {
-      id: userInDb.id,
-      name: userInDb.name,
-      email: userInDb.email,
+      email: email,
+      id: userInDb._id.$oid,
       jwt
     };
     ctx.response.status = 200;
@@ -47,7 +46,7 @@ class AuthController {
     const { value } = ctx.request.body();
     const { name, email, password } = await value;
 
-    if(!email || !password || !name) {
+    if (!email || !password || !name) {
       ctx.response.body = {
         message: "Provide name, email and password."
       };
@@ -55,7 +54,7 @@ class AuthController {
       return;
     }
 
-    let userInDb = await User.findOne({ email });
+    let userInDb = await usersCollection.findOne({ email });
     if (userInDb) {
       ctx.response.body = {
         message: "Email is already in use."
@@ -65,14 +64,17 @@ class AuthController {
     }
 
     const hashedPassword = hashSync(password);
-    let newUser = new User(name, email, hashedPassword);
-    await newUser.save();
+    const id = await usersCollection.insertOne({
+      name: name,
+      password: hashedPassword,
+      email: email,
+    });
 
     ctx.response.status = 201;
     ctx.response.body = {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email
+      id: id.$oid,
+      email: email,
+      name: name
     }
   }
 }
