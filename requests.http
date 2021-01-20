@@ -17,34 +17,39 @@ Content-Type: application/json
   "password": "testR"
 }
 
+@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0ZXN0UmFkZUBleGFtcGxlLmNvbSIsImV4cCI6MTYxMTE1MzcwMzY4NX0.73akUkvGVg2JsQUlweujPNukfihzyIJBexnIQcAcRJjGmu_Kk8KHAi7Bubs6ulE0QqQqzsPik8AwA_om_P0RdA
+
 ### Get all surveys for user
 GET http://localhost:8000/api/survey
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Get single survey
-GET http://localhost:8000/api/survey/60080eb500f89ec2003d442e
+GET http://localhost:8000/api/survey/600839560039c3c900a2299a
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Create survey
 POST http://localhost:8000/api/survey
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "name": "Survey 1",
-  "userId": "1",
+  "name": "New survey",
   "description": "lorem ipsum"
 }
 
 ### Update survey
-PUT http://localhost:8000/api/survey/60080eb500f89ec2003d442e
+PUT http://localhost:8000/api/survey/600839560039c3c900a2299a
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Survey 3",
-  "userId": "1",
   "description": "lorem ipsum 3"
 }
 
 ### Delete survey
-DELETE http://localhost:8000/api/survey/60080b9f00a688030046ca8b
+DELETE http://localhost:8000/api/survey/600839560039c3c900a2299a
 Content-Type: application/json
+Authorization: Bearer {{token}}

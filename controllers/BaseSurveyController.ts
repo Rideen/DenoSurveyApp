@@ -10,6 +10,13 @@ export default class BaseSurveyController {
       return null;
     }
 
+    const userId = ctx.state.user.id;
+    if(survey.userId !== userId) {
+      ctx.response.status = 403;
+      ctx.response.body = { message: "Specified user does not have permissions on this survey." };
+      return null;
+    }
+
     return survey;
   }
 }

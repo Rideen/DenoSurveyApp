@@ -4,7 +4,8 @@ import BaseSurveyController from "./BaseSurveyController.ts";
 
 class SurveyController extends BaseSurveyController {
   async getAllForUser(ctx: RouterContext) {
-    const surveys = await Survey.findByUser('1');
+    const userId = ctx.state.user.id;
+    const surveys = await Survey.findByUser(userId);
     ctx.response.status = 200;
     ctx.response.body = surveys;
   }
@@ -21,13 +22,14 @@ class SurveyController extends BaseSurveyController {
 
   async create(ctx: RouterContext) {
     const { value } = ctx.request.body();
-    const { name, description, userId } = await value;
+    const { name, description } = await value;
 
     if (!name || !description) {
       ctx.response.status = 422;
       ctx.response.body = "Name and description are mandatory.";
     }
 
+    const userId = ctx.state.user.id;
     const createdSurvey = await Survey.create(new Survey(userId, name, description));
 
     ctx.response.status = 201;
@@ -41,7 +43,8 @@ class SurveyController extends BaseSurveyController {
 
     if (survey) {
       const { value } = ctx.request.body();
-      const { name, description, userId } = await value;
+      const { name, description } = await value;
+      const userId = ctx.state.user.id;
       const modifiedSurvey = await Survey.update(surveyId, name, description, userId);
       ctx.response.body = modifiedSurvey;
     }
