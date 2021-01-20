@@ -54,6 +54,11 @@ export class Survey extends BaseModel {
     return Survey.prepare(survey);
   }
 
+  static async findAll(): Promise<Survey[]> {
+    const surveys = await surveysCollection.find();
+    return surveys.map((survey: any) => Survey.prepare(survey));
+  }
+
   static async findByUser(userId: string): Promise<Survey[]> {
     const surveys = await surveysCollection.find({ userId });
     return surveys.map((survey: any) => Survey.prepare(survey));
