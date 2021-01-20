@@ -31,5 +31,16 @@ Content-Type: application/json
 
 {
   "name": "Survey 1",
+  "userId": "1",
+  "description": "lorem ipsum"
+}
+
+### Update survey
+PUT http://localhost:8000/api/survey/id
+Content-Type: application/json
+
+{
+  "name": "Survey 1",
+  "userId": "1",
   "description": "lorem ipsum"
 }

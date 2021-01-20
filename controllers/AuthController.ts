@@ -1,4 +1,5 @@
 import { RouterContext, hashSync, compareSync, create, verify } from '../deps.ts';
+import { User } from "../models/User.ts";
 import { usersCollection } from '../mongo.ts';
 
 class AuthController {
@@ -14,7 +15,7 @@ class AuthController {
       return;
     }
 
-    let userInDb = await usersCollection.findOne({ email });
+    let userInDb = await User.findOne(email);
     if (!userInDb) {
       ctx.response.body = {
         message: "User not found."
@@ -35,8 +36,7 @@ class AuthController {
     const jwt = await create({ alg: "HS512", typ: "JWT" }, { iss: userInDb.email, exp: new Date().getTime() + 60 * 60 * 1000 }, secret);
 
     ctx.response.body = {
-      email: email,
-      id: userInDb._id.$oid,
+      user: userInDb,
       jwt
     };
     ctx.response.status = 200;
@@ -64,18 +64,10 @@ class AuthController {
     }
 
     const hashedPassword = hashSync(password);
-    const id = await usersCollection.insertOne({
-      name: name,
-      password: hashedPassword,
-      email: email,
-    });
+    const createdUser = await User.create(new User(name, email, hashedPassword));
 
     ctx.response.status = 201;
-    ctx.response.body = {
-      id: id.$oid,
-      email: email,
-      name: name
-    }
+    ctx.response.body = createdUser;
   }
 }
 
