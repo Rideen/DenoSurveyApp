@@ -1,8 +1,8 @@
 import { RouterContext } from '../deps.ts';
 import { Survey } from '../models/Survey.ts';
-import { surveysCollection } from '../mongo.ts';
+import BaseSurveyController from "./BaseSurveyController.ts";
 
-class SurveyController {
+class SurveyController extends BaseSurveyController {
   async getAllForUser(ctx: RouterContext) {
     const surveys = await Survey.findByUser('1');
     ctx.response.status = 200;
@@ -10,7 +10,13 @@ class SurveyController {
   }
 
   async getSingle(ctx: RouterContext) {
+    const surveyId = ctx.params.id!;
 
+    const survey = await this.findSurveyOrFail(surveyId, ctx);
+    if (survey) {
+      ctx.response.status = 200;
+      ctx.response.body = survey;
+    }
   }
 
   async create(ctx: RouterContext) {
@@ -29,11 +35,26 @@ class SurveyController {
   }
 
   async update(ctx: RouterContext) {
+    const surveyId = ctx.params.id!;
 
+    const survey = await this.findSurveyOrFail(surveyId, ctx);
+
+    if (survey) {
+      const { value } = ctx.request.body();
+      const { name, description, userId } = await value;
+      const modifiedSurvey = await Survey.update(surveyId, name, description, userId);
+      ctx.response.body = modifiedSurvey;
+    }
   }
 
   async delete(ctx: RouterContext) {
+    const surveyId = ctx.params.id!;
 
+    const survey = await this.findSurveyOrFail(surveyId, ctx);
+    if (survey) {
+      await Survey.delete(surveyId);
+      ctx.response.status = 204;
+    }
   }
 }
 

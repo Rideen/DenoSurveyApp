@@ -10,11 +10,12 @@ router
   })
   .post('/api/login', authController.login)
   .post('/api/register', authController.register)
-  .get('/api/survey', surveyController.getAllForUser)
-  .get('/api/survey/:id', surveyController.getSingle)
-  .post('/api/survey', surveyController.create)
-  .put('/api/survey', surveyController.update)
-  .delete('/api/survey', surveyController.delete)
+  // Survey
+  .get('/api/survey', surveyController.getAllForUser.bind(surveyController))
+  .get('/api/survey/:id', surveyController.getSingle.bind(surveyController))
+  .post('/api/survey', surveyController.create.bind(surveyController))
+  .put('/api/survey/:id', surveyController.update.bind(surveyController))
+  .delete('/api/survey/:id', surveyController.delete.bind(surveyController))
   ;
 
 export default router;

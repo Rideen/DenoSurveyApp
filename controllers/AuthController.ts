@@ -36,7 +36,9 @@ class AuthController {
     const jwt = await create({ alg: "HS512", typ: "JWT" }, { iss: userInDb.email, exp: new Date().getTime() + 60 * 60 * 1000 }, secret);
 
     ctx.response.body = {
-      user: userInDb,
+      id: userInDb.id,
+      name: userInDb.name,
+      email: userInDb.email,
       jwt
     };
     ctx.response.status = 200;

@@ -22,7 +22,7 @@ GET http://localhost:8000/api/survey
 Content-Type: application/json
 
 ### Get single survey
-GET http://localhost:8000/api/survey/id
+GET http://localhost:8000/api/survey/60080eb500f89ec2003d442e
 Content-Type: application/json
 
 ### Create survey
@@ -36,11 +36,15 @@ Content-Type: application/json
 }
 
 ### Update survey
-PUT http://localhost:8000/api/survey/id
+PUT http://localhost:8000/api/survey/60080eb500f89ec2003d442e
 Content-Type: application/json
 
 {
-  "name": "Survey 1",
+  "name": "Survey 3",
   "userId": "1",
-  "description": "lorem ipsum"
+  "description": "lorem ipsum 3"
 }
+
+### Delete survey
+DELETE http://localhost:8000/api/survey/60080b9f00a688030046ca8b
+Content-Type: application/json

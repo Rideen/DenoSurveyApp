@@ -33,8 +33,29 @@ export class Survey extends BaseModel {
     return survey;
   }
 
+  static async update(id: string, name: string, description: string, userId: string) {
+    await surveysCollection.updateOne({ _id: { $oid: id } }, { name, description });
+
+    const modifiedSurvey = new Survey(userId, name, description);
+    modifiedSurvey.id = id;
+
+    return modifiedSurvey;
+  }
+
+  static async delete(id: string) {
+    return surveysCollection.deleteOne({ _id: { $oid: id } });
+  }
+
+  static async findById(id: string): Promise<Survey | null> {
+    const survey = await surveysCollection.findOne({ _id: { $oid: id } });
+    if (!survey) {
+      return null;
+    }
+    return Survey.prepare(survey);
+  }
+
   static async findByUser(userId: string): Promise<Survey[]> {
-    const surveys = await surveysCollection.find({userId});
+    const surveys = await surveysCollection.find({ userId });
     return surveys.map((survey: any) => Survey.prepare(survey));
   }
 
