@@ -17,7 +17,10 @@ Content-Type: application/json
   "password": "testR"
 }
 
-@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0ZXN0UmFkZUBleGFtcGxlLmNvbSIsImV4cCI6MTYxMTE1MzcwMzY4NX0.73akUkvGVg2JsQUlweujPNukfihzyIJBexnIQcAcRJjGmu_Kk8KHAi7Bubs6ulE0QqQqzsPik8AwA_om_P0RdA
+### TOKEN
+@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0ZXN0UmFkZUBleGFtcGxlLmNvbSIsImV4cCI6MTYxMTE3MjQ0NDk0NX0.AxHEgsNP6cCqcp8KNBn2Z73hGvSCAMIA_HZ0Db3tVPgDPuNJhmrAoe_e_aIGYDSEOFA8OaWr_8ILXylSch6klw
+
+### END TOKEN
 
 ### Get all surveys for user
 GET http://localhost:8000/api/survey
@@ -51,5 +54,60 @@ Authorization: Bearer {{token}}
 
 ### Delete survey
 DELETE http://localhost:8000/api/survey/600839560039c3c900a2299a
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Get questions
+GET http://localhost:8000/api/survey/600839560039c3c900a2299a/questions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Get single question
+GET http://localhost:8000/api/question/600880a100243d5c00b8f3fe
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Create question
+POST http://localhost:8000/api/question/600839560039c3c900a2299a
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "How much do you like Deno?",
+  "type": "choice",
+  "required": true,
+  "data": {
+    "multiple": false,
+    "answers": [
+      "I'm lovin' it",
+      "I like it",
+      "I don't like it",
+      "I hate it"
+    ]
+  }
+}
+
+### Update question
+PUT http://localhost:8000/api/question/60087e1f0037f488003c66fb
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "How much do you like Node?",
+  "type": "choice",
+  "required": true,
+  "data": {
+    "multiple": false,
+    "answers": [
+      "I'm lovin' it",
+      "I like it",
+      "I don't like it",
+      "I hate it"
+    ]
+  }
+}
+
+### Delete question
+DELETE http://localhost:8000/api/question/60087e1f0037f488003c66fb
 Content-Type: application/json
 Authorization: Bearer {{token}}

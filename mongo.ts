@@ -12,4 +12,5 @@ const db = client.database("DenoSurvey");
 
 const usersCollection = db.collection<UserSchema>("users");
 const surveysCollection = db.collection<SurveySchema>("surveys");
-export { db, usersCollection, surveysCollection };
+const questionsCollection = db.collection("questions");
+export { db, usersCollection, surveysCollection, questionsCollection };

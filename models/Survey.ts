@@ -34,7 +34,7 @@ export class Survey extends BaseModel {
   }
 
   static async update(id: string, name: string, description: string, userId: string) {
-    await surveysCollection.updateOne({ _id: { $oid: id } }, { name, description });
+    await surveysCollection.updateOne({ _id: { $oid: id } }, { $set: { name, description } });
 
     const modifiedSurvey = new Survey(userId, name, description);
     modifiedSurvey.id = id;
